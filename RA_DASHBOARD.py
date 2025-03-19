@@ -89,7 +89,6 @@ if file_path is not None:
 
         # Charger les données avec le bon délimiteur
         data = pd.read_csv(file_path, delimiter=delimiter, encoding="utf-8")
-        st.write(data.head())  # Affichage des premières lignes
 
     except Exception as e:
         st.error(f"⚠️ Erreur lors du chargement du fichier : {e}")
@@ -148,6 +147,7 @@ tabs = st.tabs(["📊 Vue Globale", "👥 Opérations", "🔄 Transactions"])
 
 with tabs[0]:
     st.subheader("Vue Globale")
+    st.write(data.head())
         # Calcul des KPI
     montant_total = data["amount"].sum()
     nombre_transaction=data['transaction_id'].count()
