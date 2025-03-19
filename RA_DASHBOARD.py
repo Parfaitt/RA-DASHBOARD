@@ -70,25 +70,33 @@ def metric_card(title, value, bg_color):
     return html
 
 # --- Chargement du fichier ---
+import streamlit as st
+import pandas as pd
+import csv
+
+# --- Chargement du fichier ---
 file_path = st.sidebar.file_uploader("Choisir un fichier CSV", type="csv")
+
 if file_path is not None:
-    # Ajouter un sélecteur de délimiteur
-    delimiter = st.sidebar.selectbox(
-        "Sélectionnez le délimiteur du fichier CSV",
-        options=[",", ";", "\t", "|", ":"],  # Options de délimiteurs courants
-        index=0,  # Par défaut, la virgule est sélectionnée
-        help="Choisissez le délimiteur utilisé dans votre fichier CSV."
-    )
-    # Lire le fichier CSV avec le délimiteur spécifié
     try:
-        data = pd.read_csv(file_path, encoding="ISO-8859-1", delimiter=delimiter)
-        st.sidebar.success("Fichier CSV chargé avec succès !")
+        # Détection automatique du délimiteur
+        raw_data = file_path.read().decode("utf-8", errors="ignore")
+        dialect = csv.Sniffer().sniff(raw_data.split("\n")[0])
+        delimiter = dialect.delimiter
+
+        # Revenir au début du fichier
+        file_path.seek(0)
+
+        # Charger les données avec le bon délimiteur
+        data = pd.read_csv(file_path, delimiter=delimiter, encoding="utf-8")
+        st.write(data.head())  # Affichage des premières lignes
+
     except Exception as e:
-        st.sidebar.error(f"Erreur lors de la lecture du fichier : {e}")
-        st.stop()
+        st.error(f"⚠️ Erreur lors du chargement du fichier : {e}")
 else:
-    st.sidebar.write("Veuillez charger un fichier CSV.")
+    st.sidebar.warning("Veuillez charger un fichier CSV.")
     st.stop()
+
         
 # --- Nettoyage & transformation ---
 def extractday(dated):
