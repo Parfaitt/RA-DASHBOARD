@@ -239,7 +239,7 @@ with tabs[1]:
         st.plotly_chart(fig,use_container_width=True)
 
 st.subheader('Vue globale des 5 premières lignes')
-st.write(data.head())
+st.write(data)
         
 
 
