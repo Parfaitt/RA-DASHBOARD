@@ -8,6 +8,10 @@ from collections import Counter
 import zipfile
 import io
 import os
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
 from streamlit_extras.stylable_container import stylable_container
 import plotly.figure_factory as ff
 
@@ -90,19 +94,31 @@ payout=data[data['operation_origin']=='transfer']
 
 
 # --- Filtres dans la barre latérale ---
+# --- Filtres dans la barre latérale ---
 st.sidebar.header("🔎 Filtres Stratégiques")
-dated = st.sidebar.multiselect('Date', options=sorted(data['Date'].unique()))
-statuts = st.sidebar.multiselect('Statut', options=sorted(data['statut'].unique()))
-operation = st.sidebar.multiselect('Operation', options=sorted(data['operation_origin'].unique()))
-pays = st.sidebar.multiselect('Pays', options=sorted(data['country'].unique()))
-partenaire = st.sidebar.multiselect('Provider Name', options=sorted(data['provider_name'].unique()))
 
+# Création d'un dataframe temporaire pour appliquer les filtres dynamiquement
+filtered_data = data.copy()
+# Sélection des dates (premier filtre, car il impacte toutes les autres données)
+dated = st.sidebar.multiselect("Date", options=sorted(filtered_data["Date"].unique()))
 if dated:
-    data = data[data['Date'].isin(dated)]
-    data = data[data['statut'].isin(statuts)]
-    data = data[data['operation_origin'].isin(operation)]
-    data = data[data['country'].isin(pays)]
-    data = data[data['provider_name'].isin(partenaire)]
+    filtered_data = filtered_data[filtered_data["Date"].isin(dated)]
+# Mise à jour des options des autres filtres en fonction des données restantes
+statuts = st.sidebar.multiselect("Statut", options=sorted(filtered_data["statut"].unique()))
+if statuts:
+    filtered_data = filtered_data[filtered_data["statut"].isin(statuts)]
+operation = st.sidebar.multiselect("Operation", options=sorted(filtered_data["operation_origin"].unique()))
+if operation:
+    filtered_data = filtered_data[filtered_data["operation_origin"].isin(operation)]
+pays = st.sidebar.multiselect("Pays", options=sorted(filtered_data["country"].unique()))
+if pays:
+    filtered_data = filtered_data[filtered_data["country"].isin(pays)]
+partenaire = st.sidebar.multiselect("Provider Name", options=sorted(filtered_data["provider_name"].unique()))
+if partenaire:
+    filtered_data = filtered_data[filtered_data["provider_name"].isin(partenaire)]
+# Mise à jour finale des données après filtrage
+data = filtered_data
+
     
 # --- Création des onglets ---
 tabs = st.tabs(["📊 Vue Globale", "👥 Opérations", "🔄 Transactions"])
