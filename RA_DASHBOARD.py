@@ -6,6 +6,7 @@ from plotly.subplots import make_subplots
 from itertools import combinations
 from collections import Counter
 import zipfile
+from sklearn.cluster import KMeans
 import io
 import os
 from sklearn.preprocessing import StandardScaler
