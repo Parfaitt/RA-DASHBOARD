@@ -8,7 +8,6 @@ from collections import Counter
 import zipfile
 import io
 import os
-from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
