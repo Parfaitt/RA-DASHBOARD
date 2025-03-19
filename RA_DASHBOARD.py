@@ -147,7 +147,6 @@ tabs = st.tabs(["📊 Vue Globale", "👥 Opérations", "🔄 Transactions"])
 
 with tabs[0]:
     st.subheader("Vue Globale")
-    st.write(data.head())
         # Calcul des KPI
     montant_total = data["amount"].sum()
     nombre_transaction=data['transaction_id'].count()
@@ -238,6 +237,8 @@ with tabs[1]:
         df_sample= data[0:10][["country","provider_name","operation_origin","operator","merchant_name"]]
         fig=ff.create_table(df_sample, colorscale="Cividis")
         st.plotly_chart(fig,use_container_width=True)
+
+st.write(data.head())
         
 
 
