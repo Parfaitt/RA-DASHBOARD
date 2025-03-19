@@ -8,6 +8,10 @@ from collections import Counter
 import zipfile
 import io
 import os
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
 from streamlit_extras.stylable_container import stylable_container
 import plotly.figure_factory as ff
 
@@ -72,7 +76,20 @@ def metric_card(title, value, bg_color):
 # --- Chargement du fichier ---
 file_path = st.sidebar.file_uploader("Choisir un fichier CSV", type="csv")
 if file_path is not None:
-    data = pd.read_csv(file_path, encoding="ISO-8859-1")
+    # Ajouter un sélecteur de délimiteur
+    delimiter = st.sidebar.selectbox(
+        "Sélectionnez le délimiteur du fichier CSV",
+        options=[",", ";", "\t", "|", ":"],  # Options de délimiteurs courants
+        index=0,  # Par défaut, la virgule est sélectionnée
+        help="Choisissez le délimiteur utilisé dans votre fichier CSV."
+    )
+    # Lire le fichier CSV avec le délimiteur spécifié
+    try:
+        data = pd.read_csv(file_path, encoding="ISO-8859-1", delimiter=delimiter)
+        st.sidebar.success("Fichier CSV chargé avec succès !")
+    except Exception as e:
+        st.sidebar.error(f"Erreur lors de la lecture du fichier : {e}")
+        st.stop()
 else:
     st.sidebar.write("Veuillez charger un fichier CSV.")
     st.stop()
@@ -142,7 +159,7 @@ with tabs[0]:
 
 #affichage des graphes
     st.markdown("---")
-    st.markdown("#### Evolutions des transactions par Opérateur")
+    st.markdown("#### Evololutions des transactions par Opérateur")
     monthly_sales = data.groupby("provider_name")["amount"].sum().reset_index()
     fig_month = px.bar(monthly_sales, x="provider_name", y="amount",
         text_auto=True,
