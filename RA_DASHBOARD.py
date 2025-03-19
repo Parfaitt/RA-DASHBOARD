@@ -8,10 +8,6 @@ from collections import Counter
 import zipfile
 import io
 import os
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-from sklearn.metrics import silhouette_score
 from streamlit_extras.stylable_container import stylable_container
 import plotly.figure_factory as ff
 
