@@ -238,7 +238,7 @@ with tabs[1]:
         fig=ff.create_table(df_sample, colorscale="Cividis")
         st.plotly_chart(fig,use_container_width=True)
 
-st.subheader('Vue globale des 5 premières lignes')
+st.subheader('Vue globale des données chargées')
 st.write(data)
         
 
