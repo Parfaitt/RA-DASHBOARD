@@ -274,7 +274,7 @@ st.markdown("""
     <div class="footer">
       <p>
         Développé par <strong>NGORAN TANOH PARFAIT</strong> – Data Analyst • 
-        Retrouvez-moi sur <a href="https://https://www.linkedin.com/in/tanoh-parfait-n-goran-10410a184//" target="_blank">LinkedIn</a> • 
+        Retrouvez-moi sur <a href="https://https://www.linkedin.com/in/tanoh-parfait-n-goran-10410a184" target="_blank">LinkedIn</a> • 
         Retrouvez mon code sur <a href="https://github.com/Parfaitt" target="_blank">GitHub</a> • 
         Pour suggestions et questions : <a href="mailto:ngorantanohparfait@gmail.com">ngorantanohparfait@gmail.com</a>
       </p>
