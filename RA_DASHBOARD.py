@@ -142,7 +142,7 @@ with tabs[0]:
 
 #affichage des graphes
     st.markdown("---")
-    st.markdown("#### Evololutions des transactions par Opérateur")
+    st.markdown("#### Evolutions des transactions par Opérateur")
     monthly_sales = data.groupby("provider_name")["amount"].sum().reset_index()
     fig_month = px.bar(monthly_sales, x="provider_name", y="amount",
         text_auto=True,
